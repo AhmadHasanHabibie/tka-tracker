@@ -10,6 +10,7 @@ use App\Services\ActivityLogger;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\RateLimiter;
 
 class AdminController extends Controller
 {
@@ -36,11 +37,23 @@ class AdminController extends Controller
             'pin.required' => 'PIN wajib diisi.',
         ]);
 
+        $throttleKey = 'admin_pin:' . $request->ip() . '|' . (auth()->id() ?? 'guest');
+
+        if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
+            $seconds = RateLimiter::availableIn($throttleKey);
+            ActivityLogger::log('Rate Limit PIN Admin', 'Percobaan PIN admin melebihi batas dari IP ' . $request->ip());
+            return back()->withErrors(['pin' => 'Terlalu banyak percobaan PIN salah. Silakan coba lagi dalam ' . $seconds . ' detik.']);
+        }
+
         if ($request->pin === '131313') {
+            RateLimiter::clear($throttleKey);
             session(['admin_pin_verified' => true]);
             ActivityLogger::log('Verifikasi PIN Admin', 'Admin berhasil memverifikasi PIN 131313');
             return redirect()->route('admin.dashboard');
         }
+
+        RateLimiter::hit($throttleKey, 60);
+        ActivityLogger::log('Gagal PIN Admin', 'Percobaan PIN admin salah dari IP ' . $request->ip());
 
         return back()->withErrors(['pin' => 'PIN salah! Masukkan PIN yang benar (131313).']);
     }

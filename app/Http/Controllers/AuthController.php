@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
 
 class AuthController extends Controller
 {
@@ -32,9 +33,21 @@ class AuthController extends Controller
             'password.required' => 'Password wajib diisi.',
         ]);
 
+        $throttleKey = 'login:' . $request->ip() . '|' . mb_strtolower($request->input('username'));
+
+        if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
+            $seconds = RateLimiter::availableIn($throttleKey);
+            \App\Services\ActivityLogger::log('Rate Limit Login', 'Percobaan login melebihi batas dari IP ' . $request->ip() . ' untuk username: ' . $request->username);
+            
+            return back()
+                ->withErrors(['login' => 'Terlalu banyak percobaan login gagal. Silakan coba lagi dalam ' . $seconds . ' detik.'])
+                ->withInput($request->only('username'));
+        }
+
         $remember = $request->boolean('remember');
 
         if (Auth::attempt($credentials, $remember)) {
+            RateLimiter::clear($throttleKey);
             $request->session()->regenerate();
             $user = Auth::user();
 
@@ -47,6 +60,7 @@ class AuthController extends Controller
             return redirect()->route('dashboard');
         }
 
+        RateLimiter::hit($throttleKey, 60);
         \App\Services\ActivityLogger::log('Gagal Login', 'Percobaan login gagal dengan username: ' . $request->username);
 
         return back()
