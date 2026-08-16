@@ -15,10 +15,10 @@ class UserSeeder extends Seeder
     {
         // Primary Administrator account
         User::updateOrCreate(
-            ['username' => 'Query1234'],
+            ['email' => 'admin@utbktracker.local'],
             [
+                'username' => 'Query1234',
                 'name' => 'Administrator UTBK',
-                'email' => 'admin@utbktracker.local',
                 'role' => 'admin',
                 'password' => Hash::make('C798g107'),
             ]
