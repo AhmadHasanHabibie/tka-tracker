@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/tokobiie/repositories/tka-tracker/
+    - /bin/cp -R public/* $DEPLOYPATH/public/
