@@ -177,15 +177,16 @@
 
 <!-- Top Statistics Grid -->
 <div class="admin-stats-grid">
-    <div class="stat-card">
+    <a href="{{ route('admin.users.index') }}" class="stat-card" style="text-decoration: none; color: inherit;">
         <div class="stat-icon">
             <i data-lucide="users" style="width: 22px; height: 22px;"></i>
         </div>
-        <div>
+        <div style="flex: 1;">
             <div class="stat-value">{{ $totalUsers }}</div>
             <div class="stat-label">Total Pengguna</div>
         </div>
-    </div>
+        <i data-lucide="chevron-right" style="width: 18px; height: 18px; color: var(--text-muted);"></i>
+    </a>
     <div class="stat-card">
         <div class="stat-icon">
             <i data-lucide="line-chart" style="width: 22px; height: 22px;"></i>

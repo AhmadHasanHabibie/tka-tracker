@@ -88,5 +88,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/activities', [\App\Http\Controllers\AdminController::class, 'activities'])->name('admin.activities');
         Route::post('/admin/maintenance/toggle', [\App\Http\Controllers\AdminController::class, 'toggleMaintenance'])->name('admin.maintenance.toggle');
         Route::get('/admin/backup/download', [\App\Http\Controllers\AdminController::class, 'downloadBackup'])->name('admin.backup.download');
+
+        // 10. User Management Routes
+        Route::resource('/admin/users', \App\Http\Controllers\Admin\UserController::class)->names('admin.users');
     });
 });

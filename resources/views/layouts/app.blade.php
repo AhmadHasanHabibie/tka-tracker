@@ -851,6 +851,10 @@
                 <i data-lucide="shield"></i>
                 <span class="nav-text">Dashboard Admin</span>
             </a>
+            <a href="{{ route('admin.users.index') }}" class="nav-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+                <i data-lucide="users"></i>
+                <span class="nav-text">Manajemen Pengguna</span>
+            </a>
             <a href="{{ route('admin.activities') }}" class="nav-item {{ request()->routeIs('admin.activities') ? 'active' : '' }}">
                 <i data-lucide="history"></i>
                 <span class="nav-text">Cek Aktivitas</span>
