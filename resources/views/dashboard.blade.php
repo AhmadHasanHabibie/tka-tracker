@@ -16,6 +16,7 @@
         gap: 2rem;
         position: relative;
         overflow: hidden;
+        min-width: 0;
     }
 
     .motivation-banner::after {
@@ -49,6 +50,7 @@
 
     .motivation-content {
         flex: 1;
+        min-width: 0;
     }
 
     .motivation-badge {
@@ -72,6 +74,7 @@
         line-height: 1.25;
         margin-bottom: 0.5rem;
         letter-spacing: -0.02em;
+        word-wrap: break-word;
     }
 
     .motivation-sub {
@@ -80,6 +83,7 @@
         line-height: 1.5;
         font-weight: 500;
         margin-bottom: 1.25rem;
+        word-wrap: break-word;
     }
 
     .metrics-grid {
@@ -99,6 +103,7 @@
         gap: 1.15rem;
         box-shadow: var(--shadow-card);
         transition: var(--transition-smooth);
+        min-width: 0;
     }
 
     .metric-card:hover {
@@ -140,6 +145,8 @@
         justify-content: space-between;
         align-items: center;
         margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        gap: 0.75rem;
     }
 
     .section-header h2 {
@@ -151,7 +158,7 @@
 
     .materi-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: 1.5rem;
     }
 
@@ -170,6 +177,7 @@
         transition: var(--transition-smooth);
         position: relative;
         overflow: hidden;
+        min-width: 0;
     }
 
     .materi-card::before {
@@ -208,6 +216,7 @@
         margin-top: 0.65rem;
         line-height: 1.35;
         letter-spacing: -0.01em;
+        word-wrap: break-word;
     }
 
     .materi-desc {
@@ -218,6 +227,7 @@
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
+        word-wrap: break-word;
     }
 
     .progress-bar-bg {
@@ -242,13 +252,15 @@
         font-size: 0.825rem;
         color: var(--text-muted);
         font-weight: 700;
+        flex-wrap: wrap;
+        gap: 0.35rem;
     }
 
     .empty-card-banner {
         background-color: var(--card-bg);
         border: 2px dashed var(--border-color);
         border-radius: var(--radius);
-        padding: 3.5rem 2rem;
+        padding: 3rem 1.5rem;
         text-align: center;
         box-shadow: var(--shadow-card);
     }
@@ -277,11 +289,43 @@
         .motivation-banner {
             flex-direction: column;
             text-align: center;
-            padding: 1.75rem;
+            padding: 1.5rem 1.25rem;
+            gap: 1.25rem;
         }
         .motivation-img-box {
-            width: 110px;
-            height: 110px;
+            width: 100px;
+            height: 100px;
+        }
+        .motivation-title {
+            font-size: 1.3rem;
+        }
+        .materi-grid {
+            grid-template-columns: 1fr;
+        }
+        .metrics-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.85rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .metrics-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+        .metric-card {
+            padding: 1rem;
+            gap: 0.75rem;
+        }
+        .metric-icon {
+            width: 40px;
+            height: 40px;
+        }
+        .metric-val {
+            font-size: 1.35rem;
+        }
+        .metric-lbl {
+            font-size: 0.775rem;
         }
     }
 </style>

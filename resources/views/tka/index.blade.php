@@ -9,6 +9,8 @@
         justify-content: space-between;
         align-items: center;
         margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
     }
 
     .header-bar h1 {
@@ -38,6 +40,7 @@
         padding: 1.35rem 1.5rem;
         box-shadow: var(--shadow-card);
         transition: var(--transition-smooth);
+        min-width: 0;
     }
 
     .summary-card:hover {
@@ -50,6 +53,7 @@
         font-weight: 800;
         color: var(--text-main);
         line-height: 1.2;
+        word-wrap: break-word;
     }
 
     .summary-lbl {
@@ -77,6 +81,7 @@
         padding: 1.75rem;
         box-shadow: var(--shadow-card);
         margin-bottom: 2rem;
+        min-width: 0;
     }
 
     .chart-header {
@@ -95,6 +100,12 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
+    }
+
+    .chart-canvas-box {
+        position: relative;
+        width: 100%;
+        height: 340px;
     }
 
     .grid-2col {
@@ -162,6 +173,32 @@
             flex-direction: column;
             align-items: flex-start;
             gap: 1rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .chart-container-box {
+            padding: 1.25rem;
+        }
+        .chart-canvas-box {
+            height: 260px;
+        }
+        .summary-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.85rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .summary-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+        .summary-card {
+            padding: 1rem;
+        }
+        .summary-val {
+            font-size: 1.2rem;
         }
     }
 </style>
@@ -248,7 +285,7 @@
                 </select>
             </div>
         </div>
-        <div style="position: relative; width: 100%; height: 340px;">
+        <div class="chart-canvas-box">
             <canvas id="tkaTrendChart"></canvas>
         </div>
     </div>
@@ -263,7 +300,7 @@
                     Nilai TKA Terbaru ({{ $latestTryout->name }})
                 </div>
             </div>
-            <div style="position: relative; width: 100%; height: 320px;">
+            <div class="chart-canvas-box" style="height: 320px;">
                 <canvas id="tkaLatestBarChart"></canvas>
             </div>
         </div>
@@ -354,7 +391,7 @@
             Riwayat Hasil TKA
         </h3>
 
-        <div style="overflow-x: auto;">
+        <div class="table-responsive-wrapper">
             <table class="table-history">
                 <thead>
                     <tr>

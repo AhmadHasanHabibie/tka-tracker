@@ -55,13 +55,18 @@
             padding: 0;
         }
 
-        body {
+        html, body {
+            width: 100%;
+            overflow-x: hidden;
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: var(--bg-body);
             color: var(--text-main);
             min-height: 100vh;
-            display: flex;
             -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            display: flex;
         }
 
         /* Lucide Global Icons Styling */
@@ -83,16 +88,24 @@
             top: 0;
             bottom: 0;
             left: 0;
-            z-index: 100;
+            z-index: 1000;
             box-shadow: 2px 0 12px rgba(15, 23, 42, 0.03);
+            transition: transform 0.2s ease-out;
         }
 
         .sidebar-brand {
             padding: 1.5rem;
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 0.875rem;
             border-bottom: 1px solid var(--border-color);
+        }
+
+        .brand-logo-group {
+            display: flex;
+            align-items: center;
+            gap: 0.875rem;
         }
 
         .brand-icon {
@@ -112,6 +125,22 @@
             font-weight: 800;
             color: var(--primary-deep);
             letter-spacing: -0.03em;
+        }
+
+        .sidebar-close-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: var(--transition-smooth);
+        }
+
+        .sidebar-close-btn:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
         }
 
         .sidebar-nav {
@@ -134,6 +163,7 @@
             font-size: 0.925rem;
             border-radius: var(--radius-sm);
             transition: var(--transition-smooth);
+            min-height: 44px;
         }
 
         .nav-item .lucide {
@@ -171,6 +201,23 @@
             font-weight: 600;
         }
 
+        /* Mobile Overlay */
+        .sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.45);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
         /* Main Wrapper */
         .main-wrapper {
             margin-left: var(--sidebar-width);
@@ -178,11 +225,13 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            min-width: 0;
+            width: calc(100% - var(--sidebar-width));
         }
 
         .top-navbar {
             height: 72px;
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border-color);
             display: flex;
@@ -194,11 +243,43 @@
             z-index: 90;
         }
 
+        .header-left-group {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            min-width: 0;
+        }
+
+        .mobile-hamburger-btn {
+            display: none;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 0.6rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            min-width: 44px;
+            min-height: 44px;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .mobile-hamburger-btn:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            border-color: var(--primary-border);
+        }
+
         .page-header-title {
             font-size: 1.3rem;
             font-weight: 800;
             color: var(--primary-deep);
             letter-spacing: -0.02em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         /* Profile Dropdown Component */
@@ -208,8 +289,8 @@
         }
 
         .profile-avatar-btn {
-            width: 42px;
-            height: 42px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             background: #ffffff;
             border: 2.5px solid var(--primary-light);
@@ -256,7 +337,7 @@
             position: absolute;
             top: calc(100% + 10px);
             right: 0;
-            width: 220px;
+            width: 230px;
             background: #ffffff;
             border: 1px solid var(--border-color);
             border-radius: var(--radius);
@@ -306,7 +387,7 @@
             align-items: center;
             gap: 0.65rem;
             width: 100%;
-            padding: 0.65rem 0.85rem;
+            padding: 0.75rem 0.85rem;
             font-size: 0.875rem;
             font-weight: 700;
             color: var(--text-main);
@@ -318,6 +399,7 @@
             transition: var(--transition-smooth);
             text-align: left;
             font-family: inherit;
+            min-height: 44px;
         }
 
         .dropdown-item .lucide {
@@ -353,12 +435,14 @@
             color: var(--danger-text);
         }
 
+        /* Container System & Page Padding */
         .content-body {
             padding: 2.5rem;
-            max-width: 1200px;
+            max-width: 1400px;
             width: 100%;
             margin: 0 auto;
             flex: 1;
+            min-width: 0;
         }
 
         /* Toast Notification System */
@@ -381,6 +465,7 @@
             font-size: 0.9rem;
             animation: toastSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             transition: opacity 0.3s ease, transform 0.3s ease;
+            max-width: calc(100vw - 32px);
         }
 
         @keyframes toastSlideIn {
@@ -419,9 +504,14 @@
             color: #9ca3af;
             cursor: pointer;
             font-size: 1.1rem;
-            padding: 0 0.25rem;
+            padding: 0.25rem 0.5rem;
             line-height: 1;
             transition: color 0.2s ease;
+            min-width: 44px;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .toast-close:hover {
@@ -443,6 +533,7 @@
             cursor: pointer;
             transition: var(--transition-smooth);
             font-family: inherit;
+            min-height: 44px;
         }
 
         .btn .lucide {
@@ -497,9 +588,10 @@
         }
 
         .btn-sm {
-            padding: 0.4rem 0.8rem;
+            padding: 0.45rem 0.85rem;
             font-size: 0.825rem;
             border-radius: 8px;
+            min-height: 38px;
         }
 
         .btn-sm .lucide {
@@ -516,6 +608,7 @@
             margin-bottom: 1.75rem;
             box-shadow: var(--shadow-card);
             transition: var(--transition-smooth);
+            min-width: 0;
         }
 
         /* Form Elements System */
@@ -533,6 +626,7 @@
 
         .form-control, .form-select {
             width: 100%;
+            min-height: 44px;
             padding: 0.75rem 1rem;
             background-color: #ffffff;
             border: 1.5px solid var(--border-color);
@@ -575,11 +669,20 @@
             letter-spacing: 0.02em;
         }
 
+        /* Responsive Table Wrapper */
+        .table-responsive-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-bottom: 1rem;
+        }
+
         /* SweetAlert2 Custom Styling */
         .swal2-custom-popup {
             font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
             border-radius: 24px !important;
-            padding: 2.25rem 2rem !important;
+            padding: 2rem 1.5rem !important;
+            max-width: calc(100vw - 32px) !important;
             background: rgba(255, 255, 255, 0.96) !important;
             backdrop-filter: blur(20px) !important;
             border: 1px solid rgba(226, 232, 240, 0.9) !important;
@@ -588,7 +691,7 @@
         .swal2-custom-title {
             color: #1e3a8a !important;
             font-weight: 800 !important;
-            font-size: 1.45rem !important;
+            font-size: 1.3rem !important;
             letter-spacing: -0.02em !important;
         }
         .swal2-custom-confirm-btn {
@@ -599,6 +702,7 @@
             padding: 0.75rem 1.6rem !important;
             box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35) !important;
             border: none !important;
+            min-height: 44px !important;
         }
         .swal2-custom-confirm-btn:hover {
             background: linear-gradient(135deg, #dc2626, #b91c1c) !important;
@@ -610,34 +714,69 @@
             font-size: 0.9rem !important;
             padding: 0.75rem 1.6rem !important;
             border: none !important;
+            min-height: 44px !important;
         }
         .swal2-custom-cancel-btn:hover {
             background: #475569 !important;
         }
 
+        /* Reduced Motion Support */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        /* Tablet Breakpoint (768px - 1023px) */
+        @media (max-width: 1023px) {
+            .content-body {
+                padding: 1.75rem 1.25rem;
+            }
+        }
+
+        /* Mobile Breakpoint (<768px) */
         @media (max-width: 768px) {
             .sidebar {
-                width: 70px;
+                left: -280px;
+                width: 280px;
             }
-            .brand-text, .nav-text, .sidebar-footer, .sidebar-section-title {
-                display: none;
+            .sidebar.mobile-open {
+                transform: translateX(280px);
             }
-            .sidebar-brand {
-                justify-content: center;
-                padding: 1.25rem 0;
+            .sidebar-close-btn {
+                display: flex;
             }
-            .nav-item {
-                justify-content: center;
-                padding: 0.875rem;
+            .mobile-hamburger-btn {
+                display: flex;
             }
             .main-wrapper {
-                margin-left: 70px;
+                margin-left: 0;
+                width: 100%;
             }
             .top-navbar {
-                padding: 0 1.25rem;
+                padding: 0 1rem;
+                height: 64px;
+            }
+            .page-header-title {
+                font-size: 1.1rem;
+            }
+            .target-tag-header {
+                display: none;
             }
             .content-body {
+                padding: 1rem;
+            }
+            .card {
                 padding: 1.25rem;
+                border-radius: 14px;
+            }
+            .toast-container {
+                top: 16px;
+                right: 16px;
+                left: 16px;
             }
         }
     </style>
@@ -653,13 +792,21 @@
         </div>
     @endif
 
+    <!-- Mobile Sidebar Dark Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <!-- Sidebar Navigation -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="mainSidebar">
         <div class="sidebar-brand">
-            <div class="brand-icon">
-                <i data-lucide="graduation-cap" style="width: 22px; height: 22px;"></i>
+            <div class="brand-logo-group">
+                <div class="brand-icon">
+                    <i data-lucide="graduation-cap" style="width: 22px; height: 22px;"></i>
+                </div>
+                <span class="brand-text">UTBK Tracker</span>
             </div>
-            <span class="brand-text">UTBK Tracker</span>
+            <button type="button" class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Tutup Menu">
+                <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+            </button>
         </div>
 
         <nav class="sidebar-nav">
@@ -719,11 +866,17 @@
     <!-- Main Content Wrapper -->
     <div class="main-wrapper">
         <header class="top-navbar">
-            <div class="page-header-title">
-                @yield('title', 'Dashboard UTBK Tracker')
+            <div class="header-left-group">
+                <button type="button" class="mobile-hamburger-btn" id="mobileHamburgerBtn" aria-label="Buka Menu Navigasi">
+                    <i data-lucide="menu" style="width: 22px; height: 22px;"></i>
+                </button>
+                <div class="page-header-title">
+                    @yield('title', 'Dashboard UTBK Tracker')
+                </div>
             </div>
+
             <div style="display: flex; align-items: center; gap: 1.25rem;">
-                <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600; display: flex; align-items: center; gap: 0.35rem;">
+                <div class="target-tag-header" style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600; display: flex; align-items: center; gap: 0.35rem;">
                     <i data-lucide="target" style="width: 16px; height: 16px; color: var(--primary);"></i>
                     Target UTBK & TKA
                 </div>
@@ -790,6 +943,36 @@
             if (toast) {
                 setTimeout(() => { closeToast(); }, 4000);
             }
+
+            // Mobile Drawer Toggle Logic
+            const hamburgerBtn = document.getElementById('mobileHamburgerBtn');
+            const closeBtn = document.getElementById('sidebarCloseBtn');
+            const sidebar = document.getElementById('mainSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+
+            function openMobileSidebar() {
+                if (sidebar && overlay) {
+                    sidebar.classList.add('mobile-open');
+                    overlay.classList.add('active');
+                }
+            }
+
+            function closeMobileSidebar() {
+                if (sidebar && overlay) {
+                    sidebar.classList.remove('mobile-open');
+                    overlay.classList.remove('active');
+                }
+            }
+
+            if (hamburgerBtn) hamburgerBtn.addEventListener('click', openMobileSidebar);
+            if (closeBtn) closeBtn.addEventListener('click', closeMobileSidebar);
+            if (overlay) overlay.addEventListener('click', closeMobileSidebar);
+
+            // Close mobile sidebar when clicking any nav item
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', closeMobileSidebar);
+            });
 
             // Profile Dropdown Toggle Logic
             const profileBtn = document.getElementById('profileDropdownBtn');

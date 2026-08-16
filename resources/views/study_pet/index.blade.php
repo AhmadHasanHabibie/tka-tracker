@@ -35,6 +35,7 @@
         margin-bottom: 2rem;
         position: relative;
         overflow: hidden;
+        min-width: 0;
     }
 
     .pet-avatar-wrapper {
@@ -74,6 +75,7 @@
         font-weight: 800;
         color: var(--primary-deep);
         margin-bottom: 0.25rem;
+        word-wrap: break-word;
     }
 
     .xp-total-subtitle {
@@ -98,6 +100,8 @@
         font-weight: 700;
         color: var(--text-muted);
         margin-bottom: 0.4rem;
+        flex-wrap: wrap;
+        gap: 0.35rem;
     }
 
     .xp-progress-track {
@@ -120,6 +124,7 @@
         color: var(--text-muted);
         font-weight: 600;
         margin-top: 0.5rem;
+        word-wrap: break-word;
     }
 
     /* Stats Grid */
@@ -140,6 +145,7 @@
         align-items: center;
         gap: 1rem;
         transition: var(--transition-smooth);
+        min-width: 0;
     }
 
     .stat-card:hover {
@@ -154,6 +160,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        flex-shrink: 0;
     }
 
     .stat-val {
@@ -178,6 +185,7 @@
         padding: 1.5rem;
         box-shadow: var(--shadow-card);
         margin-bottom: 2rem;
+        min-width: 0;
     }
 
     .calendar-header {
@@ -185,12 +193,14 @@
         justify-content: space-between;
         align-items: center;
         margin-bottom: 1.25rem;
+        flex-wrap: wrap;
+        gap: 0.75rem;
     }
 
     .calendar-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(42px, 1fr));
-        gap: 0.6rem;
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+        gap: 0.5rem;
     }
 
     .cal-day-box {
@@ -251,6 +261,7 @@
         border: 1px solid var(--border-color);
         border-radius: 10px;
         margin-bottom: 0.6rem;
+        gap: 0.75rem;
     }
 
     .activity-item:last-child {
@@ -264,11 +275,48 @@
         font-size: 0.8rem;
         padding: 0.25rem 0.6rem;
         border-radius: 6px;
+        flex-shrink: 0;
     }
 
     @media (max-width: 900px) {
         .grid-2col {
             grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .pet-hero-card {
+            padding: 1.75rem 1.25rem;
+        }
+        .pet-avatar-wrapper {
+            width: 90px;
+            height: 90px;
+            font-size: 3.8rem;
+        }
+        .pet-name {
+            font-size: 1.35rem;
+        }
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.85rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+        .stat-card {
+            padding: 1rem;
+            gap: 0.65rem;
+        }
+        .stat-icon-box {
+            width: 40px;
+            height: 40px;
+        }
+        .stat-val {
+            font-size: 1.2rem;
         }
     }
 </style>
@@ -383,14 +431,14 @@
             <div style="margin-bottom: 1rem;">
                 @foreach($todayXpLogs as $log)
                     <div class="activity-item">
-                        <div style="display: flex; align-items: center; gap: 0.6rem;">
-                            <i data-lucide="check-circle-2" style="width: 18px; height: 18px; color: #10b981;"></i>
-                            <div>
-                                <span style="font-weight: 700; font-size: 0.9rem; color: var(--text-main);">
+                        <div style="display: flex; align-items: center; gap: 0.6rem; min-width: 0;">
+                            <i data-lucide="check-circle-2" style="width: 18px; height: 18px; color: #10b981; flex-shrink: 0;"></i>
+                            <div style="min-width: 0;">
+                                <span style="font-weight: 700; font-size: 0.9rem; color: var(--text-main); word-wrap: break-word;">
                                     {{ $log->source === 'login' ? 'Login Pertama Hari Ini' : 'Menyelesaikan To-Do' }}
                                 </span>
                                 @if($log->description && $log->source !== 'login')
-                                    <div style="font-size: 0.8rem; color: var(--text-muted);">
+                                    <div style="font-size: 0.8rem; color: var(--text-muted); word-wrap: break-word;">
                                         "{{ $log->description }}"
                                     </div>
                                 @endif
@@ -455,14 +503,14 @@
         <div style="display: flex; flex-direction: column; gap: 0.6rem;">
             @foreach($recentXpLogs as $log)
                 <div class="activity-item">
-                    <div style="display: flex; align-items: center; gap: 0.75rem;">
-                        <i data-lucide="sparkles" style="width: 18px; height: 18px; color: var(--primary);"></i>
-                        <div>
-                            <div style="font-weight: 700; font-size: 0.925rem; color: var(--text-main);">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; min-width: 0;">
+                        <i data-lucide="sparkles" style="width: 18px; height: 18px; color: var(--primary); flex-shrink: 0;"></i>
+                        <div style="min-width: 0;">
+                            <div style="font-weight: 700; font-size: 0.925rem; color: var(--text-main); word-wrap: break-word;">
                                 {{ $log->source === 'login' ? 'Login Pertama Hari Ini' : 'Menyelesaikan To-Do' }}
                             </div>
                             @if($log->description && $log->source !== 'login')
-                                <div style="font-size: 0.8rem; color: var(--text-muted);">
+                                <div style="font-size: 0.8rem; color: var(--text-muted); word-wrap: break-word;">
                                     "{{ $log->description }}"
                                 </div>
                             @endif

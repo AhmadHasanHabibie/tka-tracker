@@ -27,6 +27,7 @@
         gap: 1rem;
         box-shadow: var(--shadow-sm);
         transition: var(--transition-smooth);
+        min-width: 0;
     }
 
     .todo-item:hover {
@@ -50,6 +51,7 @@
         font-size: 0.975rem;
         color: var(--text-main);
         line-height: 1.35;
+        word-wrap: break-word;
     }
 
     .todo-meta {
@@ -77,9 +79,12 @@
         cursor: pointer;
         line-height: 1;
         transition: transform 0.2s ease;
-        padding: 0.1rem;
+        padding: 0.25rem;
         display: flex;
         align-items: center;
+        min-width: 36px;
+        min-height: 36px;
+        justify-content: center;
     }
 
     .status-toggle-btn:hover {
@@ -89,6 +94,19 @@
     @media (max-width: 900px) {
         .todo-wrapper {
             grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 580px) {
+        .todo-item {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.85rem;
+        }
+        .todo-item > div:last-child {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
         }
     }
 </style>
@@ -169,12 +187,12 @@
     <div>
         @if($selectedMateri)
             <div class="card" style="border-left: 5px solid var(--primary); margin-bottom: 1.5rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
                     <div>
                         <span class="badge-subject">{{ $selectedMateri->subject->name }}</span>
-                        <h2 style="font-size: 1.35rem; font-weight: 800; margin-top: 0.35rem; color: var(--text-main);">{{ $selectedMateri->title }}</h2>
+                        <h2 style="font-size: 1.35rem; font-weight: 800; margin-top: 0.35rem; color: var(--text-main); word-wrap: break-word;">{{ $selectedMateri->title }}</h2>
                         @if($selectedMateri->description)
-                            <p style="font-size: 0.875rem; color: var(--text-muted); margin-top: 0.25rem;">{{ $selectedMateri->description }}</p>
+                            <p style="font-size: 0.875rem; color: var(--text-muted); margin-top: 0.25rem; word-wrap: break-word;">{{ $selectedMateri->description }}</p>
                         @endif
                     </div>
                     <div style="text-align: right; flex-shrink: 0;">
@@ -194,7 +212,7 @@
             <div class="todo-list">
                 @forelse($todoTasks as $task)
                     <div class="todo-item {{ $task->status === 'completed' ? 'completed' : '' }}">
-                        <div style="display: flex; align-items: flex-start; gap: 0.875rem;">
+                        <div style="display: flex; align-items: flex-start; gap: 0.875rem; min-width: 0;">
                             <form action="{{ route('todolist.complete', $task) }}" method="POST" style="margin-top: 0.15rem;">
                                 @csrf
                                 @method('PATCH')
@@ -206,7 +224,7 @@
                                     @endif
                                 </button>
                             </form>
-                            <div>
+                            <div style="min-width: 0;">
                                 <div class="todo-title">{{ $task->title }}</div>
                                 <div class="todo-meta">
                                     <span class="badge-subject" style="font-size: 0.7rem; padding: 0.15rem 0.5rem;">
