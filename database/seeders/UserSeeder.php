@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
     {
         // Primary Administrator account
         User::updateOrCreate(
-            ['username' => 'Query123'],
+            ['username' => 'Query1234'],
             [
                 'name' => 'Administrator UTBK',
                 'email' => 'admin@utbktracker.local',
