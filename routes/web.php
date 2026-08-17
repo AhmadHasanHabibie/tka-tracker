@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FileStreamController;
 use App\Http\Controllers\GoalController;
 use App\Http\Controllers\MateriController;
 use App\Http\Controllers\StudyPetController;
@@ -27,6 +28,11 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 
 // Protected Routes (Auth Only)
 Route::middleware('auth')->group(function () {
+    // Dynamic File Streaming (Symlink-free)
+    Route::get('/storage/{path}', [FileStreamController::class, 'show'])
+        ->where('path', '.*')
+        ->name('storage.serve');
+
     Route::get('/', function () {
         return redirect()->route('dashboard');
     });

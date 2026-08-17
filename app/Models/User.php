@@ -37,6 +37,17 @@ class User extends Authenticatable
     }
 
     /**
+     * Get avatar URL or null.
+     */
+    public function getAvatarUrlAttribute(): ?string
+    {
+        if ($this->avatar) {
+            return asset('storage/' . $this->avatar);
+        }
+        return null;
+    }
+
+    /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
