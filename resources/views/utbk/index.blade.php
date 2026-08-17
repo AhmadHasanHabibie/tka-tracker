@@ -78,6 +78,8 @@
         box-shadow: var(--shadow-card);
         margin-bottom: 2rem;
         min-width: 0;
+        max-width: 100%;
+        box-sizing: border-box;
     }
 
     .chart-header {
@@ -86,7 +88,8 @@
         align-items: center;
         margin-bottom: 1.5rem;
         flex-wrap: wrap;
-        gap: 1rem;
+        gap: 0.85rem;
+        max-width: 100%;
     }
 
     .chart-title {
@@ -96,6 +99,32 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        min-width: 0;
+    }
+
+    .chart-filter-box {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .chart-filter-label {
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: var(--text-muted);
+        white-space: nowrap;
+    }
+
+    .chart-filter-select {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.875rem;
+        width: auto;
+        max-width: 100%;
+        min-width: 0;
+        border-radius: var(--radius-sm);
+        text-overflow: ellipsis;
     }
 
     .chart-canvas-box {
@@ -118,35 +147,39 @@
 
     .table-history th, .table-history td {
         padding: 1.1rem 1rem;
-        border-bottom: 1px solid var(--border-color);
         text-align: left;
+        border-bottom: 1px solid var(--border-color);
     }
 
     .table-history th {
-        font-size: 0.775rem;
-        text-transform: uppercase;
-        color: var(--text-muted);
+        font-size: 0.8rem;
         font-weight: 800;
+        color: var(--text-muted);
+        text-transform: uppercase;
         letter-spacing: 0.05em;
-        background-color: #f8fafc;
+        background-color: rgba(241, 245, 249, 0.6);
     }
 
-    .table-history tr:hover td {
-        background-color: #f8fafc;
+    .table-history tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .table-history tbody tr:hover {
+        background-color: var(--primary-light);
     }
 
     .notice-box {
-        background-color: #f0f9ff;
-        border: 1px solid #bae6fd;
-        color: #0369a1;
-        padding: 0.875rem 1.25rem;
+        background-color: #eff6ff;
+        border: 1px solid #bfdbfe;
+        color: #1e40af;
+        padding: 1rem 1.25rem;
         border-radius: var(--radius-sm);
-        font-size: 0.875rem;
+        margin-bottom: 2rem;
+        font-size: 0.9rem;
         font-weight: 600;
-        margin-bottom: 1.25rem;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.75rem;
     }
 
     @media (max-width: 900px) {
@@ -165,11 +198,29 @@
             padding: 1.25rem;
         }
         .chart-canvas-box {
-            height: 260px;
+            height: 270px;
         }
         .summary-grid {
             grid-template-columns: repeat(2, 1fr);
             gap: 0.85rem;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .chart-header {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.75rem;
+        }
+        .chart-filter-box {
+            width: 100%;
+            justify-content: space-between;
+        }
+        .chart-filter-select {
+            flex: 1;
+            width: 100%;
+            min-width: 0;
+            max-width: 100%;
         }
     }
 
@@ -265,9 +316,9 @@
                 <i data-lucide="bar-chart-2" style="width: 20px; height: 20px; color: var(--primary);"></i>
                 Perkembangan Nilai per Subtes
             </div>
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <label for="subtestSelectFilter" style="font-size: 0.875rem; font-weight: 700; color: var(--text-muted);">Subtes:</label>
-                <select id="subtestSelectFilter" class="form-select" style="padding: 0.4rem 0.8rem; font-size: 0.875rem; width: auto;" onchange="updateSubtestChart(this.value)">
+            <div class="chart-filter-box">
+                <label for="subtestSelectFilter" class="chart-filter-label">Subtes:</label>
+                <select id="subtestSelectFilter" class="form-select chart-filter-select" onchange="updateSubtestChart(this.value)">
                     <option value="ALL">-- Semua Subtes --</option>
                     @foreach($subtests as $key => $label)
                         <option value="{{ $key }}">{{ $label }}</option>

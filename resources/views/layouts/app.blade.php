@@ -609,6 +609,8 @@
             box-shadow: var(--shadow-card);
             transition: var(--transition-smooth);
             min-width: 0;
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
         /* Form Elements System */
@@ -626,6 +628,8 @@
 
         .form-control, .form-select {
             width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
             min-height: 44px;
             padding: 0.75rem 1rem;
             background-color: #ffffff;
